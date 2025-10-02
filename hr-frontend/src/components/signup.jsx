@@ -5,15 +5,17 @@ import styles from '../assets/signup.module.css'; // Updated CSS module import
 const Signup = () => {
     const [role, setRole] = useState('employee'); // 'hr' or 'employee'
     const [fullName, setFullName] = useState('');
-    const [workEmail, setWorkEmail] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    // HR-specific fields
     const [companyName, setCompanyName] = useState('');
     const [companySize, setCompanySize] = useState('');
-    const [industry, setIndustry] = useState('');
-    const [location, setLocation] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [employeeIdOrCode, setEmployeeIdOrCode] = useState('');
+
+    // Employee-specific fields
+    const [employeeId, setEmployeeId] = useState('');
     const [department, setDepartment] = useState('');
+
     const [isFlipped, setIsFlipped] = useState(false);
     const [error, setError] = useState('');
     const [formSuccess, setFormSuccess] = useState(false);
@@ -25,16 +27,6 @@ const Signup = () => {
         { value: '11-50', label: '11–50' },
         { value: '51-200', label: '51–200' },
         { value: '200+', label: '200+' }
-    ];
-
-    const industryOptions = [
-        { value: '', label: 'Select Industry' },
-        { value: 'tech', label: 'Technology' },
-        { value: 'finance', label: 'Finance' },
-        { value: 'healthcare', label: 'Healthcare' },
-        { value: 'retail', label: 'Retail' },
-        { value: 'manufacturing', label: 'Manufacturing' },
-        { value: 'other', label: 'Other' }
     ];
 
     const departmentOptions = [
@@ -52,19 +44,19 @@ const Signup = () => {
         setError('');
 
         if (role === 'hr') {
-            if (!fullName || !workEmail || !password || !companyName || !companySize || !industry || !location) {
+            if (!fullName || !email || !password || !companyName || !companySize) {
                 setError('Please fill in all required fields for HR Admin sign-up.');
                 return;
             }
         } else {
-            if (!fullName || !workEmail || !password || !employeeIdOrCode) {
+            if (!fullName || !email || !password || !employeeId) {
                 setError('Please fill in all required fields for Employee sign-up.');
                 return;
             }
         }
 
         // Simple validation for employee email domain match or code - simulate for now
-        if (role === 'employee' && !workEmail.includes('@company.com') && !employeeIdOrCode.startsWith('INV-')) {
+        if (role === 'employee' && !email.includes('@company.com') && !employeeId.startsWith('INV-')) {
             setError('Work email must match company domain or provide a valid invitation code.');
             return;
         }
@@ -93,8 +85,8 @@ const Signup = () => {
             <input
                 type="email"
                 placeholder="Work Email"
-                value={workEmail}
-                onChange={(e) => setWorkEmail(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
             />
             <input
@@ -122,30 +114,6 @@ const Signup = () => {
                     </option>
                 ))}
             </select>
-            <select
-                value={industry}
-                onChange={(e) => setIndustry(e.target.value)}
-                required
-            >
-                {industryOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
-            <input
-                type="text"
-                placeholder="Location / Country"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                required
-            />
-            <input
-                type="tel"
-                placeholder="Phone Number (optional)"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-            />
             <button type="submit">Create Company Account</button>
         </>
     );
@@ -162,8 +130,8 @@ const Signup = () => {
             <input
                 type="email"
                 placeholder="Work Email"
-                value={workEmail}
-                onChange={(e) => setWorkEmail(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
             />
             <input
@@ -176,8 +144,8 @@ const Signup = () => {
             <input
                 type="text"
                 placeholder="Employee ID or Invitation Code"
-                value={employeeIdOrCode}
-                onChange={(e) => setEmployeeIdOrCode(e.target.value)}
+                value={employeeId}
+                onChange={(e) => setEmployeeId(e.target.value)}
                 required
             />
             <select

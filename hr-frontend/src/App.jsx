@@ -320,6 +320,8 @@ function App() {
       <main className="main-content">
         <Routes>
           <Route path="/login" element={<CodePenDemo />} />
+          {/* NEW: Added route for /signup - public access */}
+          <Route path="/signup" element={<Signup />} />
           <Route
             path="/hr"
             element={

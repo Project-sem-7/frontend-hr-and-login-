@@ -1,19 +1,27 @@
-/* signup.module.css */
+/* signup.module.css - Updated for Clearer UI with Text Fully Inside White Box and Increased Size for HR Admin */
+
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300');
+
+:root {
+    --prim: #53e3a6;
+}
 
 .loginWrapper {
     position: relative;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: white;
+    /* Ensure base text color for readability */
 }
 
 .form-success {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
+    background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
 }
 
 .bg-bubbles {
@@ -131,8 +139,10 @@
 }
 
 .scene {
-    width: 320px;
-    height: 480px;
+    width: 405px;
+    /* Increased by ~12.5% from 360px to better fit HR Admin fields */
+    height: 700px;
+    /* Increased further from 585px to make the white box longer */
     perspective: 600px;
     z-index: 1;
 }
@@ -157,32 +167,47 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
+    justify-content: flex-start;
+    /* Changed to flex-start to prevent overflow */
+    padding: 35px;
+    /* Increased padding slightly to maintain proportions with larger size */
     box-sizing: border-box;
-    background: white;
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    /* Slightly larger radius */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    /* Prevent any text spillover */
 }
 
 .cardFace:nth-child(2) {
     transform: rotateY(180deg);
-    background: #4CAF50;
+    background: var(--prim);
     color: white;
 }
 
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: white;
+    font-size: 24px;
+    /* Increased for better visibility */
+    font-weight: bold;
+    width: 100%;
+    /* Ensure full width containment */
+    padding: 0 10px;
+    /* Extra padding if needed */
 }
 
 .form {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+    /* Increased gap for clearer separation */
     transition: opacity 0.5s, transform 0.5s;
+    flex: 1;
+    /* Allow form to take available space without overflowing */
 }
 
 .fadeOut {
@@ -190,60 +215,162 @@ h2 {
     transform: translateY(-20px);
 }
 
+/* Label styling - assuming labels are siblings or wrappers; adjust if needed */
+label {
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    /* Smaller for labels to fit */
+    font-weight: 500;
+    color: white;
+    margin-bottom: 5px;
+    /* Space between label and input */
+    text-align: left;
+    padding-left: 2px;
+    /* Slight indent */
+}
+
 input,
 select {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 15px;
+    /* Increased padding for easier touch/typing */
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    /* Thicker, lighter border for clarity */
+    border-radius: 8px;
     font-size: 16px;
     width: 100%;
     box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Ensure white background for inputs */
+    color: white;
+    /* Dark text for readability */
+    transition: border-color 0.3s ease;
+    /* Smooth focus effect */
+    margin-bottom: 0;
+    /* Remove default margin to control with gap */
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    /* Gray placeholders for subtlety */
+    opacity: 1;
 }
 
 select {
     cursor: pointer;
+    appearance: none;
+    /* Remove default arrow for custom styling if needed */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    /* Custom arrow */
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 45px;
+    /* Increased space for arrow to stay inside */
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--prim);
+    /* Match theme on focus */
+    box-shadow: 0 0 0 3px rgba(83, 227, 166, 0.1);
+    /* Subtle glow */
 }
 
 button {
-    padding: 12px;
-    background: #667eea;
-    color: white;
+    padding: 15px;
+    /* Match input padding */
+    background: white;
+    /* Gradient for visual appeal */
+    color: var(--prim);
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    transition: background 0.3s;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(83, 227, 166, 0.3);
+    /* Subtle shadow */
+    width: 100%;
+    /* Full width to stay inside card */
+    margin-top: auto;
+    /* Push to bottom if needed */
 }
 
 button:hover {
-    background: #5a67d8;
+    background: rgb(245, 247, 249);
+    transform: translateY(-1px);
+    /* Slight lift on hover */
+    box-shadow: 0 6px 16px rgba(83, 227, 166, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 .error {
-    color: #e53e3e;
+    color: #ff4757;
     text-align: center;
     margin: 10px 0;
     font-size: 14px;
+    background-color: rgba(255, 71, 87, 0.2);
+    /* Light red background for visibility */
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 71, 87, 0.4);
+    width: 100%;
+    /* Ensure it fits inside */
 }
 
 .roleSelector {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
-    gap: 20px;
+    gap: 10px;
+    /* Reduced gap for tighter fit */
+    width: 100%;
+    padding: 10px 0;
+    /* Add padding for separation */
+    flex-wrap: wrap;
+    /* Allow wrapping on small screens */
 }
 
 .roleSelector label {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    /* Increased gap */
     cursor: pointer;
     font-size: 14px;
-    color: #333;
+    /* Adjusted for fit */
+    color: white;
+    font-weight: 500;
+    padding: 8px 12px;
+    /* Padding for clickable area */
+    border-radius: 20px;
+    /* Pill shape */
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    /* Border for definition */
+    flex: 1;
+    /* Equal width for buttons */
+    min-width: 100px;
+    /* Minimum width to prevent squishing */
+    justify-content: center;
+    text-align: center;
 }
 
 .roleSelector input[type="radio"] {
     margin: 0;
+    accent-color: var(--prim);
+    /* Theme color for radio buttons */
+}
+
+.roleSelector input[type="radio"]:checked+label {
+    background-color: var(--prim);
+    color: white;
+    border-color: var(--prim);
 }
 
 .cardFace:nth-child(2) h2,
@@ -253,4 +380,91 @@ button:hover {
 
 .cardFace:nth-child(2) p {
     font-size: 18px;
+    text-align: center;
+    margin-top: 10px;
+    padding: 0 10px;
+    /* Ensure padding inside */
+}
+
+/* Responsive adjustments for larger screens */
+@media (min-width: 480px) {
+    .scene {
+        width: 480px;
+        /* Further increase for desktop to ~12.5% more than base */
+        height: 780px;
+        /* Scaled accordingly and increased for longer box */
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    .form {
+        gap: 25px;
+    }
+
+    input,
+    select,
+    button {
+        padding: 18px;
+        font-size: 18px;
+    }
+
+    label {
+        font-size: 16px;
+    }
+
+    .roleSelector label {
+        font-size: 16px;
+        min-width: 120px;
+    }
+
+    .cardFace {
+        padding: 40px;
+        /* Scale padding for larger size */
+    }
+}
+
+/* Ensure high contrast for accessibility */
+@media (prefers-contrast: high) {
+
+    input,
+    select {
+        border-width: 3px;
+        background-color: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    .roleSelector label {
+        border-width: 3px;
+    }
+
+    label {
+        color: white;
+    }
+}
+
+/* Mobile-specific tweaks to prevent overflow */
+@media (max-width: 360px) {
+    .scene {
+        width: 100%;
+        max-width: 340px;
+        height: auto;
+        min-height: 700px;
+        /* Scale min-height to match longer box */
+    }
+
+    .cardFace {
+        padding: 20px;
+    }
+
+    .roleSelector {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .roleSelector label {
+        width: 100%;
+        justify-content: flex-start;
+    }
 }
