@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 import CodePenDemo from "./components/CodePenDemo";
-import Signup from "./components/Signup";
+import Signup from "./components/signup";
 import "./App.css";
 
 function HrPage({ onLogout }) {
@@ -49,6 +49,25 @@ function HrPage({ onLogout }) {
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
+  // Helper to format YYYY-MM-DD to dd/mm/yyyy for display
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-');
+    return `${d.padStart(2, '0')}/${m.padStart(2, '0')}/${y}`;
+  };
+
+  // Helper to format dd/mm/yyyy to YYYY-MM-DD for date input (with padding)
+  const formatDateForInput = (dateStr) => {
+    if (!dateStr) return '';
+    const parts = dateStr.split('/');
+    if (parts.length !== 3) return '';
+    const [dayStr, monthStr, yearStr] = parts.map(p => p.trim());
+    const day = dayStr.padStart(2, '0');
+    const month = monthStr.padStart(2, '0');
+    const year = yearStr;
+    return `${year}-${month}-${day}`;
+  };
+
   // Helper to parse dates: handles both dd/mm/yyyy (input) and YYYY-MM-DD (data)
   const parseDate = (dateStr, format = 'dd/mm/yyyy') => {
     if (!dateStr) return null;
@@ -70,11 +89,11 @@ function HrPage({ onLogout }) {
     const fromParsed = parseDate(fromDate, 'dd/mm/yyyy');
     const toParsed = parseDate(toDate, 'dd/mm/yyyy');
     if (fromDate && !fromParsed) {
-      console.error('Invalid from date format. Use dd/mm/yyyy.');
+      console.error('Invalid from date.');
       return;
     }
     if (toDate && !toParsed) {
-      console.error('Invalid to date format. Use dd/mm/yyyy.');
+      console.error('Invalid to date.');
       return;
     }
     if (fromDate && toDate && fromParsed && toParsed && fromParsed > toParsed) {
@@ -160,8 +179,8 @@ function HrPage({ onLogout }) {
                   <td>{emp.id}</td>
                   <td>{emp.name}</td>
                   <td>{emp.dept}</td>
-                  <td>{emp.join_date}</td>
-                  <td>{emp.present_date}</td>
+                  <td>{formatDate(emp.join_date)}</td>
+                  <td>{formatDate(emp.present_date)}</td>
                 </tr>
               ))
             ) : (
@@ -200,7 +219,7 @@ function HrPage({ onLogout }) {
               <label className="filter-label">From Date</label>
               <input
                 type="date"  // Changed to native date picker for better UX/validation
-                value={fromDate ? fromDate.split('/').reverse().join('-') : ''}  // Convert dd/mm/yyyy to YYYY-MM-DD for input
+                value={formatDateForInput(fromDate)}  // Use helper for robust padding
                 onChange={(e) => {
                   const val = e.target.value;
                   if (val) {
@@ -217,7 +236,7 @@ function HrPage({ onLogout }) {
               <label className="filter-label">To Date</label>
               <input
                 type="date"
-                value={toDate ? toDate.split('/').reverse().join('-') : ''}
+                value={formatDateForInput(toDate)}  // Use helper for robust padding
                 onChange={(e) => {
                   const val = e.target.value;
                   if (val) {
