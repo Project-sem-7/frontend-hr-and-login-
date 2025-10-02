@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
-import CodePenDemo from "./components/CodePenDemo";  // Correct path: from src/ to src/components/
+import CodePenDemo from "./components/CodePenDemo";
+import Signup from "./components/Signup";
 import "./App.css";
 
 function HrPage({ onLogout }) {
@@ -48,9 +49,47 @@ function HrPage({ onLogout }) {
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
+  // Helper to parse dates: handles both dd/mm/yyyy (input) and YYYY-MM-DD (data)
+  const parseDate = (dateStr, format = 'dd/mm/yyyy') => {
+    if (!dateStr) return null;
+    let parts;
+    if (format === 'dd/mm/yyyy') {
+      parts = dateStr.split('/').map(Number);
+      if (parts.length !== 3 || parts.some(isNaN)) return null;
+      return new Date(parts[2], parts[1] - 1, parts[0]); // Month is 0-indexed
+    } else { // YYYY-MM-DD
+      parts = dateStr.split('-').map(Number);
+      if (parts.length !== 3 || parts.some(isNaN)) return null;
+      return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
+    // Basic validation for dates
+    const fromParsed = parseDate(fromDate, 'dd/mm/yyyy');
+    const toParsed = parseDate(toDate, 'dd/mm/yyyy');
+    if (fromDate && !fromParsed) {
+      console.error('Invalid from date format. Use dd/mm/yyyy.');
+      return;
+    }
+    if (toDate && !toParsed) {
+      console.error('Invalid to date format. Use dd/mm/yyyy.');
+      return;
+    }
+    if (fromDate && toDate && fromParsed && toParsed && fromParsed > toParsed) {
+      console.error('From date cannot be after to date.');
+      return;
+    }
     console.log(`Filtering from: ${fromDate}, to: ${toDate}, dept: ${deptFilter}, employee ID: ${employeeIdFilter}`);
+    setShowFilterModal(false);
+  };
+
+  const handleClearFilters = () => {
+    setFromDate('');
+    setToDate('');
+    setDeptFilter('');
+    setEmployeeIdFilter('');
     setShowFilterModal(false);
   };
 
@@ -58,10 +97,27 @@ function HrPage({ onLogout }) {
     onLogout();
   };
 
-  const filteredEmployees = employees.filter((emp) =>
-    emp.dept.toLowerCase().includes(deptFilter.toLowerCase()) &&
-    emp.id.toString().includes(employeeIdFilter)
-  );
+  const filteredEmployees = employees.filter((emp) => {
+    // Existing filters
+    const deptMatch = emp.dept.toLowerCase().includes(deptFilter.toLowerCase());
+    const idMatch = emp.id.toString().includes(employeeIdFilter);
+
+    // New: Date filter on join_date (skip if no dates provided)
+    let dateMatch = true;
+    const fromParsed = parseDate(fromDate, 'dd/mm/yyyy');
+    const toParsed = parseDate(toDate, 'dd/mm/yyyy');
+    const joinParsed = parseDate(emp.join_date, 'YYYY-MM-DD');
+    if (fromParsed && toParsed && joinParsed) {
+      dateMatch = joinParsed >= fromParsed && joinParsed <= toParsed;
+    } else if (fromParsed && joinParsed) {
+      dateMatch = joinParsed >= fromParsed;
+    } else if (toParsed && joinParsed) {
+      dateMatch = joinParsed <= toParsed;
+    }
+    // If parsing failed, skip date filter for that employee (or log error)
+
+    return deptMatch && idMatch && dateMatch;
+  });
 
   return (
     <div className="hr-page">
@@ -143,24 +199,40 @@ function HrPage({ onLogout }) {
               />
               <label className="filter-label">From Date</label>
               <input
-                type="text"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-                placeholder="From: dd/mm/yyyy"
+                type="date"  // Changed to native date picker for better UX/validation
+                value={fromDate ? fromDate.split('/').reverse().join('-') : ''}  // Convert dd/mm/yyyy to YYYY-MM-DD for input
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val) {
+                    // Convert back to dd/mm/yyyy for state
+                    const [y, m, d] = val.split('-');
+                    setFromDate(`${d}/${m}/${y}`);
+                  } else {
+                    setFromDate('');
+                  }
+                }}
                 className="date-input"
                 aria-label="From date"
               />
               <label className="filter-label">To Date</label>
               <input
-                type="text"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-                placeholder="To: dd/mm/yyyy"
+                type="date"
+                value={toDate ? toDate.split('/').reverse().join('-') : ''}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val) {
+                    const [y, m, d] = val.split('-');
+                    setToDate(`${d}/${m}/${y}`);
+                  } else {
+                    setToDate('');
+                  }
+                }}
                 className="date-input"
                 aria-label="To date"
               />
               <div className="modal-buttons">
                 <button type="submit" className="search-button">Apply Filter</button>
+                <button type="button" onClick={handleClearFilters} className="cancel-button">Clear Filters</button>
                 <button
                   type="button"
                   onClick={() => setShowFilterModal(false)}
@@ -221,13 +293,17 @@ function EmployeePage({ onLogout }) {
 }
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);  // Changed to null for loading state
+  const [loading, setLoading] = useState(true);  // New: Prevent flash
 
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
+    setLoading(false);
   }, []);
 
   const ProtectedRoute = ({ children }) => {
+    if (loading) return <div>Loading...</div>;  // New: Show loader during check
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     return loggedIn ? children : <Navigate to="/login" replace />;
   };
@@ -236,6 +312,8 @@ function App() {
     localStorage.removeItem('isLoggedIn');
     setIsLoggedIn(false);
   };
+
+  if (loading) return <div>Loading...</div>;  // New: Initial loader
 
   return (
     <div className="App">
