@@ -9,11 +9,20 @@ body {
   font-family: system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
 }
 
 .App {
   min-height: 100vh;
   background-color: #f9f9f9;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Main Content */
@@ -21,11 +30,19 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* HR Page */
 .hr-page {
   width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header {
@@ -37,6 +54,8 @@ body {
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-bottom: 24px;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .page-title {
@@ -79,6 +98,8 @@ body {
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-bottom: 24px;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .search-form {
@@ -86,6 +107,7 @@ body {
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+  justify-content: center;
 }
 
 .filter-label {
@@ -128,6 +150,8 @@ body {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1200px;
 }
 
 .employee-table {
@@ -164,6 +188,7 @@ body {
   .search-form {
     flex-direction: column;
     align-items: stretch;
+    justify-content: center;
   }
 
   .filter-input,
@@ -175,6 +200,7 @@ body {
     flex-direction: column;
     gap: 10px;
     text-align: center;
+    width: 100%;
   }
 
   .header-actions {
@@ -187,6 +213,8 @@ body {
 .filter-button-section {
   padding: 20px;
   text-align: center;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .filter-button {
@@ -226,6 +254,9 @@ body {
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .modal-content h3 {
@@ -237,6 +268,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  width: 100%;
 }
 
 .filter-label {
@@ -250,6 +282,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
+  width: 100%;
 }
 
 .modal-buttons {
@@ -257,6 +290,7 @@ body {
   gap: 10px;
   justify-content: flex-end;
   margin-top: 20px;
+  width: 100%;
 }
 
 .search-button,
@@ -266,6 +300,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  flex: 1;
 }
 
 .search-button {
@@ -289,6 +324,9 @@ body {
 /* Existing styles (add if not present) */
 .hr-page {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header {
@@ -296,6 +334,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .page-title {
@@ -325,6 +364,7 @@ body {
 
 .table-section {
   overflow-x: auto;
+  width: 100%;
 }
 
 .employee-table {

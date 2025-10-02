@@ -9,6 +9,16 @@
     margin: 0;
     padding: 0;
     font-weight: 300;
+    border: none;
+}
+
+html {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: none;
+    overflow: hidden;
 }
 
 body {
@@ -16,6 +26,11 @@ body {
     color: white;
     font-weight: 300;
     overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: none;
     /* Prevent scrolling for full-screen effect */
 }
 
@@ -31,6 +46,7 @@ body {
     position: relative;
     margin: 0;
     padding: 0;
+    border: none;
 }
 
 /* Full-screen Bubble background animation */
@@ -44,6 +60,7 @@ body {
     margin: 0;
     padding: 0;
     list-style: none;
+    border: none;
 }
 
 .bg-bubbles li {
@@ -55,6 +72,7 @@ body {
     background-color: rgba(255, 255, 255, 0.15);
     border-radius: 50%;
     /* Make bubbles round for better animation */
+    border: none;
 }
 
 .bg-bubbles li:nth-child(1) {
@@ -229,6 +247,9 @@ body {
     perspective: 600px;
     position: relative;
     z-index: 2;
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
 /* Card container */
@@ -238,6 +259,9 @@ body {
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.8s ease-in-out;
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
 /* Smooth flip */
@@ -258,6 +282,8 @@ body {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 20px;
+    border: none;
+    margin: 0;
 }
 
 /* Back face */
@@ -272,6 +298,9 @@ body {
     width: 80%;
     justify-content: center;
     align-items: center;
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
 /* Inputs */
@@ -286,6 +315,7 @@ body {
     text-align: center;
     color: white;
     transition: 0.25s;
+    margin: 0;
 }
 
 .cardFace input:focus {
@@ -307,6 +337,7 @@ body {
     background: white;
     color: var(--prim);
     transition: 0.25s;
+    margin: 0;
 }
 
 .cardFace button:hover {
@@ -318,11 +349,15 @@ body {
     color: #ff4757;
     font-size: 14px;
     text-align: center;
+    margin: 0;
 }
 
 /* Fade + success animations */
 .form {
     transition: opacity 0.5s ease-out;
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
 .fadeOut {
@@ -333,4 +368,5 @@ body {
 .form-success h2 {
     transform: translateY(85px);
     transition: transform 1s ease-in-out;
+    margin: 0;
 }
