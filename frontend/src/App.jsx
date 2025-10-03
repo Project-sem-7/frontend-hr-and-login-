@@ -3,7 +3,6 @@ import { Routes, Route, Link, Navigate } from "react-router-dom";
 import CodePenDemo from "./components/CodePenDemo";
 import Signup from "./components/signup";
 import ForgotPassword from "./components/forgetpassword";
-import HR_Calendar from "./components/HR_Calendar"
 import "./App.css";
 
 function HrPage({ onLogout }) {
@@ -29,6 +28,33 @@ function HrPage({ onLogout }) {
     { id: 14, name: 'Mona Nelson', dept: 'Sales', join_date: '2014-07-04', present_date: '2025-10-03' },
     { id: 15, name: 'Nina Owens', dept: 'Marketing', join_date: '2019-05-09', present_date: '2025-10-03' },
   ]);
+
+  // Dashboard data
+  const [today, setToday] = useState(new Date().toISOString().split('T')[0]);
+  const attendanceSummary = {
+    present: employees.filter(emp => emp.present_date === today).length,
+    absent: employees.filter(emp => emp.present_date === null).length,
+    late: 1, // Simulated late count
+    total: employees.length
+  };
+
+  const pendingCorrectionRequests = [
+    { id: 1, employee: 'John Doe', date: '2025-10-02', reason: 'Punch time correction' },
+    { id: 2, employee: 'Jane Smith', date: '2025-10-01', reason: 'Missing entry' },
+    { id: 3, employee: 'Bob Brown', date: '2025-09-30', reason: 'Late punch adjustment' }
+  ];
+
+  const pendingLeaveRequests = [
+    { id: 1, employee: 'Alice Johnson', dates: '2025-10-04 to 2025-10-06', type: 'Sick Leave' },
+    { id: 2, employee: 'Diana Evans', dates: '2025-10-07', type: 'Personal Leave' },
+    { id: 3, employee: 'Hank Ingram', dates: '2025-10-10 to 2025-10-11', type: 'Vacation' }
+  ];
+
+  const alerts = [
+    { id: 1, type: 'Policy Breach', message: 'Employee ID 4 exceeded overtime limit' },
+    { id: 2, type: 'Device Sync Issue', message: 'Sync failed for device in IT department' },
+    { id: 3, type: 'Policy Breach', message: 'Unapproved leave for Employee ID 9' }
+  ];
 
   const [currentTime, setCurrentTime] = useState('');
 
@@ -157,31 +183,49 @@ function HrPage({ onLogout }) {
         <div className="dashboard-card attendance-card">
           <h3>Today's Attendance Summary</h3>
           <div className="summary-stats">
-            <p>Total Employees: <span className="stat-number">15</span></p>
-            <p>Present: <span className="stat-number present">12</span></p>
-            <p>Absent: <span className="stat-number absent">3</span></p>
-            <p>Late: <span className="stat-number late">1</span></p>
+            <p>Total Employees: <span className="stat-number">{attendanceSummary.total}</span></p>
+            <p>Present: <span className="stat-number present">{attendanceSummary.present}</span></p>
+            <p>Absent: <span className="stat-number absent">{attendanceSummary.absent}</span></p>
+            <p>Late: <span className="stat-number late">{attendanceSummary.late}</span></p>
           </div>
         </div>
 
         {/* Pending Correction Requests */}
         <div className="dashboard-card corrections-card">
-          <h3>Pending Correction Requests (0)</h3>
+          <h3>Pending Correction Requests ({pendingCorrectionRequests.length})</h3>
           <ul className="request-list">
+            {pendingCorrectionRequests.slice(0, 3).map(req => (
+              <li key={req.id}>
+                {req.employee} - {formatDate(req.date)}: {req.reason}
+              </li>
+            ))}
+            {pendingCorrectionRequests.length > 3 && <li className="more-items">... and {pendingCorrectionRequests.length - 3} more</li>}
           </ul>
         </div>
 
         {/* Pending Leave Requests */}
         <div className="dashboard-card leave-card">
-          <h3>Pending Leave Requests (0)</h3>
+          <h3>Pending Leave Requests ({pendingLeaveRequests.length})</h3>
           <ul className="request-list">
+            {pendingLeaveRequests.slice(0, 3).map(req => (
+              <li key={req.id}>
+                {req.employee} - {req.dates}: {req.type}
+              </li>
+            ))}
+            {pendingLeaveRequests.length > 3 && <li className="more-items">... and {pendingLeaveRequests.length - 3} more</li>}
           </ul>
         </div>
 
         {/* Alerts */}
         <div className="dashboard-card alerts-card">
-          <h3>Alerts (0)</h3>
+          <h3>Alerts ({alerts.length})</h3>
           <ul className="alert-list">
+            {alerts.slice(0, 3).map(alert => (
+              <li key={alert.id} className="alert-item">
+                <strong>{alert.type}:</strong> {alert.message}
+              </li>
+            ))}
+            {alerts.length > 3 && <li className="more-items">... and {alerts.length - 3} more</li>}
           </ul>
         </div>
       </section>
@@ -378,7 +422,7 @@ function App() {
           <Route path="/login" element={<CodePenDemo />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgetpassword" element={<ForgotPassword />} />
-          <Route path="/HRCalendar" element={<HR_Calendar />} />
+
           <Route
             path="/hr"
             element={
