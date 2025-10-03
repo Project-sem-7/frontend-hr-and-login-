@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
-import CodePenDemo from "./components/CodePenDemo";
+import CodePenDemo from "./components/CodePenDemo";//login
 import Signup from "./components/signup";
 import ForgotPassword from "./components/forgetpassword";
 import "./App.css";
@@ -401,9 +401,7 @@ function App() {
   }, []);
 
   const ProtectedRoute = ({ children }) => {
-    if (loading) return <div>Loading...</div>;  // New: Show loader during check
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    return loggedIn ? children : <Navigate to="/login" replace />;
+    return isLoggedIn ? children : <Navigate to="/login" replace />;
   };
 
   const handleLogout = () => {
