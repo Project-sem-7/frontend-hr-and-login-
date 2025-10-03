@@ -344,6 +344,26 @@ body {
     background: rgb(245, 247, 249);
 }
 
+/* Signup Button (secondary style) */
+.signupButton {
+    padding: 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 250px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: 0.25s;
+    margin-top: 10px;
+}
+
+.signupButton:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
 /* Errors */
 .error {
     color: #ff4757;

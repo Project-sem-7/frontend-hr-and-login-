@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../assets/CodePenDemo.module.css'; // CSS module
+import Signup from './signup'; // Keep this if you'll use it elsewhere, but not needed for navigation approach
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -46,6 +47,11 @@ const Login = () => {
         }
     };
 
+    const handleSignupClick = (e) => {
+        e.preventDefault(); // Prevent form submission
+        navigate('/signup'); // Navigate to signup route (ensure you have a route for this in your App.js)
+    };
+
     return (
         <div
             className={`${styles.loginWrapper} ${formSuccess ? styles['form-success'] : ''
@@ -56,10 +62,7 @@ const Login = () => {
                     {/* Front: Login Form */}
                     <div className={styles.cardFace}>
                         <h2>Login</h2>
-                        <form
-                            onSubmit={handleSubmit}
-                            className={`${styles.form} ${formSuccess ? styles.fadeOut : ''}`}
-                        >
+                        <form onSubmit={handleSubmit} className={`${styles.form} ${formSuccess ? styles.fadeOut : ''}`}>
                             <input
                                 type="text"
                                 placeholder="Username"
@@ -77,6 +80,14 @@ const Login = () => {
                             {error && <p className={styles.error}>{error}</p>}
                             <button type="submit">Login</button>
                         </form>
+                        {/* Signup button outside the form to avoid submission issues */}
+                        <button
+                            type="button"
+                            onClick={handleSignupClick}
+                            className={styles.signupButton} // Add a CSS class for styling if needed
+                        >
+                            Don't have an account? Signup
+                        </button>
                     </div>
 
                     {/* Back: Success */}
