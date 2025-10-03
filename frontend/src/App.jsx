@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
-import CodePenDemo from "./components/CodePenDemo";//login
+import CodePenDemo from "./components/CodePenDemo";
 import Signup from "./components/signup";
 import ForgotPassword from "./components/forgetpassword";
 import "./App.css";
@@ -12,49 +12,22 @@ function HrPage({ onLogout }) {
   const [employeeIdFilter, setEmployeeIdFilter] = useState('');
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [employees] = useState([
-    { id: 1, name: 'John Doe', dept: 'HR', join_date: '2014-11-02', present_date: '2025-10-03' },
-    { id: 2, name: 'Jane Smith', dept: 'IT', join_date: '2015-04-17', present_date: '2025-10-03' },
-    { id: 3, name: 'Alice Johnson', dept: 'Finance', join_date: '2010-04-23', present_date: null }, // Absent
-    { id: 4, name: 'Bob Brown', dept: 'Marketing', join_date: '2025-04-28', present_date: '2025-10-03' },
-    { id: 5, name: 'Charlie Davis', dept: 'Sales', join_date: '2010-10-13', present_date: '2025-10-03' },
-    { id: 6, name: 'Diana Evans', dept: 'IT', join_date: '2011-02-20', present_date: null }, // Absent
-    { id: 7, name: 'Frank Green', dept: 'HR', join_date: '2012-02-10', present_date: '2025-10-03' },
-    { id: 8, name: 'Grace Harris', dept: 'Finance', join_date: '2021-08-12', present_date: '2025-10-03' },
-    { id: 9, name: 'Hank Ingram', dept: 'Sales', join_date: '2010-04-21', present_date: '2025-10-03' },
-    { id: 10, name: 'Irene Johnson', dept: 'Marketing', join_date: '2017-04-30', present_date: null }, // Absent
-    { id: 11, name: 'Jack King', dept: 'IT', join_date: '2018-05-21', present_date: '2025-10-03' },
-    { id: 12, name: 'Karen Lee', dept: 'Finance', join_date: '2024-08-30', present_date: '2025-10-03' },
-    { id: 13, name: 'Leo Martin', dept: 'HR', join_date: '2010-01-18', present_date: '2025-10-03' },
-    { id: 14, name: 'Mona Nelson', dept: 'Sales', join_date: '2014-07-04', present_date: '2025-10-03' },
-    { id: 15, name: 'Nina Owens', dept: 'Marketing', join_date: '2019-05-09', present_date: '2025-10-03' },
+    { id: 1, name: 'John Doe', dept: 'HR', join_date: '2014-11-02', present_date: '2025-10-02' },
+    { id: 2, name: 'Jane Smith', dept: 'IT', join_date: '2015-04-17', present_date: '2025-10-02' },
+    { id: 3, name: 'Alice Johnson', dept: 'Finance', join_date: '2010-04-23', present_date: '2025-10-02' },
+    { id: 4, name: 'Bob Brown', dept: 'Marketing', join_date: '2025-04-28', present_date: '2025-10-02' },
+    { id: 5, name: 'Charlie Davis', dept: 'Sales', join_date: '2010-10-13', present_date: '2025-10-02' },
+    { id: 6, name: 'Diana Evans', dept: 'IT', join_date: '2011-02-20', present_date: '2025-10-02' },
+    { id: 7, name: 'Frank Green', dept: 'HR', join_date: '2012-02-10', present_date: '2025-10-02' },
+    { id: 8, name: 'Grace Harris', dept: 'Finance', join_date: '2021-08-12', present_date: '2025-10-02' },
+    { id: 9, name: 'Hank Ingram', dept: 'Sales', join_date: '2010-04-21', present_date: '2025-10-02' },
+    { id: 10, name: 'Irene Johnson', dept: 'Marketing', join_date: '2017-04-30', present_date: '2025-10-02' },
+    { id: 11, name: 'Jack King', dept: 'IT', join_date: '2018-05-21', present_date: '2025-10-02' },
+    { id: 12, name: 'Karen Lee', dept: 'Finance', join_date: '2024-08-30', present_date: '2025-10-02' },
+    { id: 13, name: 'Leo Martin', dept: 'HR', join_date: '2010-01-18', present_date: '2025-10-02' },
+    { id: 14, name: 'Mona Nelson', dept: 'Sales', join_date: '2014-07-04', present_date: '2025-10-02' },
+    { id: 15, name: 'Nina Owens', dept: 'Marketing', join_date: '2019-05-09', present_date: '2025-10-02' },
   ]);
-
-  // Dashboard data
-  const [today, setToday] = useState(new Date().toISOString().split('T')[0]);
-  const attendanceSummary = {
-    present: employees.filter(emp => emp.present_date === today).length,
-    absent: employees.filter(emp => emp.present_date === null).length,
-    late: 1, // Simulated late count
-    total: employees.length
-  };
-
-  const pendingCorrectionRequests = [
-    { id: 1, employee: 'John Doe', date: '2025-10-02', reason: 'Punch time correction' },
-    { id: 2, employee: 'Jane Smith', date: '2025-10-01', reason: 'Missing entry' },
-    { id: 3, employee: 'Bob Brown', date: '2025-09-30', reason: 'Late punch adjustment' }
-  ];
-
-  const pendingLeaveRequests = [
-    { id: 1, employee: 'Alice Johnson', dates: '2025-10-04 to 2025-10-06', type: 'Sick Leave' },
-    { id: 2, employee: 'Diana Evans', dates: '2025-10-07', type: 'Personal Leave' },
-    { id: 3, employee: 'Hank Ingram', dates: '2025-10-10 to 2025-10-11', type: 'Vacation' }
-  ];
-
-  const alerts = [
-    { id: 1, type: 'Policy Breach', message: 'Employee ID 4 exceeded overtime limit' },
-    { id: 2, type: 'Device Sync Issue', message: 'Sync failed for device in IT department' },
-    { id: 3, type: 'Policy Breach', message: 'Unapproved leave for Employee ID 9' }
-  ];
 
   const [currentTime, setCurrentTime] = useState('');
 
@@ -170,63 +143,12 @@ function HrPage({ onLogout }) {
     <div className="hr-page">
       {/* Header */}
       <header className="header">
-        <h1 className="page-title">HR Dashboard Overview</h1>
+        <h1 className="page-title">HR Page</h1>
         <div className="header-actions">
           <p className="current-time">Current Time: {currentTime}</p>
           <Link to="/login" onClick={handleLogout} className="logout-link">Logout</Link>
         </div>
       </header>
-
-      {/* Dashboard Quick Views */}
-      <section className="dashboard-section">
-        {/* Today's Attendance Summary */}
-        <div className="dashboard-card attendance-card">
-          <h3>Today's Attendance Summary</h3>
-          <p>Total Employees: {attendanceSummary.total}</p>
-          <p>Present: {attendanceSummary.present}</p>
-          <p>Absent: {attendanceSummary.absent}</p>
-          <p>Late: {attendanceSummary.late}</p>
-        </div>
-
-        {/* Pending Correction Requests */}
-        <div className="dashboard-card corrections-card">
-          <h3>Pending Correction Requests ({pendingCorrectionRequests.length})</h3>
-          <ul className="request-list">
-            {pendingCorrectionRequests.slice(0, 3).map(req => (
-              <li key={req.id}>
-                {req.employee} - {formatDate(req.date)}: {req.reason}
-              </li>
-            ))}
-            {pendingCorrectionRequests.length > 3 && <li>...</li>}
-          </ul>
-        </div>
-
-        {/* Pending Leave Requests */}
-        <div className="dashboard-card leave-card">
-          <h3>Pending Leave Requests ({pendingLeaveRequests.length})</h3>
-          <ul className="request-list">
-            {pendingLeaveRequests.slice(0, 3).map(req => (
-              <li key={req.id}>
-                {req.employee} - {req.dates}: {req.type}
-              </li>
-            ))}
-            {pendingLeaveRequests.length > 3 && <li>...</li>}
-          </ul>
-        </div>
-
-        {/* Alerts */}
-        <div className="dashboard-card alerts-card">
-          <h3>Alerts ({alerts.length})</h3>
-          <ul className="alert-list">
-            {alerts.slice(0, 3).map(alert => (
-              <li key={alert.id} className="alert-item">
-                <strong>{alert.type}:</strong> {alert.message}
-              </li>
-            ))}
-            {alerts.length > 3 && <li>...</li>}
-          </ul>
-        </div>
-      </section>
 
       {/* Filter Button */}
       <section className="filter-button-section">
@@ -235,7 +157,7 @@ function HrPage({ onLogout }) {
           className="filter-button"
           aria-label="Open filter modal"
         >
-          Filter Employees
+          Filter
         </button>
       </section>
 
@@ -401,7 +323,9 @@ function App() {
   }, []);
 
   const ProtectedRoute = ({ children }) => {
-    return isLoggedIn ? children : <Navigate to="/login" replace />;
+    if (loading) return <div>Loading...</div>;  // New: Show loader during check
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    return loggedIn ? children : <Navigate to="/login" replace />;
   };
 
   const handleLogout = () => {
