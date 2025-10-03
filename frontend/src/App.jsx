@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 import CodePenDemo from "./components/CodePenDemo";
 import Signup from "./components/signup";
+import ForgotPassword from "./components/forgetpassword";
 import "./App.css";
 
 function HrPage({ onLogout }) {
@@ -339,8 +340,8 @@ function App() {
       <main className="main-content">
         <Routes>
           <Route path="/login" element={<CodePenDemo />} />
-          {/* NEW: Added route for /signup - public access */}
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgetpassword" element={<ForgotPassword />} />
           <Route
             path="/hr"
             element={
